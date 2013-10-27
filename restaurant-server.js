@@ -4,7 +4,7 @@
 
 var express = require('express');
 var url = require('url');
-var mongoConnect = require('./static/js/mongo_dal');
+var mongoConnect = require('./lib/mongo_dal');
 var server = express.createServer();
 
 
@@ -27,73 +27,12 @@ server.get('/getRestaurantGrade', function (request, response) {
         telephone: (query.telephone) ? query.telephone : ''
     };
 
-    var response_body = fetchRestaurant(restaurantData);
-    response.send(buildResponse(response_body));
-});
-
-var fetchRestaurant = function (restaurantData) {
-
-    console.log('Trying name and address search.');
-    mongoConnect.findRestaurantByNameAndAddress(restaurantData, function (err, results) {
-        if (err) { console.warn(err); }
-
-        if (!results) {
-
-            if (restaurantData.telephone !== '') {
-
-                console.log('No match for ' + restaurantData.name + ' trying name and telephone search.');
-                mongoConnect.findRestaurantByNameAndTelephone(restaurantData, function (err, results) {
-                    if (err) { console.warn(err); return; }
-
-                    if (results) {
-                        console.log('Results for ' + results.name);
-                        console.log(results);
-
-                        return results;
-                    } else {
-                        console.log('No match for ' + restaurantData.name + ' trying address search.');
-                        mongoConnect.findRestaurantByAddress(restaurantData, function (err, results) {
-                            if (err) { console.warn(err); return; }
-
-                            if (results) {
-                                console.log('Results for ' + results.name);
-                                console.log(results);
-
-                                return results;
-                            } else {
-                                console.log('No Match for : ' + restaurantData.name);
-                                return -1;
-                            }
-                        });
-                    }
-                });
-
-            } else {
-
-                console.log('No match for ' + restaurantData.name + ' trying address search.');
-                mongoConnect.findRestaurantByAddress(restaurantData, function (err, results) {
-                    if (err) { console.warn(err); return; }
-
-                    if (results) {
-                        console.log('Results for ' + results.name);
-                        console.log(results);
-
-                        return results;
-                    } else {
-                        console.log('No Match for : ' + restaurantData.name);
-                        return -1;
-                    }
-                });
-
-            }
-        } else {
-            console.log('Results for ' + results.name);
-            console.log(results);
-
-            return results;
-        }
+    mongoConnect.fetchRestaurant(restaurantData, function (responseBody) {
+        console.log(responseBody);
+        response.send(buildResponse(responseBody));
     });
-}
+
+});
 
 var buildResponse = function(results) {
 

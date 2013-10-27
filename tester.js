@@ -4,9 +4,9 @@
  * TODO write code to interface with mongoDB collections.
  **/
 
-connections = require('./static/js/restaurantConnections');
-parser = require('./static/js/restaurantParser');
-mongoConnect = require('./static/js/mongo_dal');
+connections = require('./lib/restaurantConnections');
+parser = require('./lib/restaurantParser');
+mongoConnect = require('./lib/mongo_dal');
 
 var restaurantData = {
     total_count: 0,
