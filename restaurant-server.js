@@ -40,7 +40,8 @@ var buildResponse = function(results) {
 
         var responseData = {
             grade_image: results.grade_image,
-            last_inspection_date: results.last_inspected_date
+            last_inspection_date: results.last_inspected_date,
+            current_grade: results.current_grade
         };
 
         return responseData;
