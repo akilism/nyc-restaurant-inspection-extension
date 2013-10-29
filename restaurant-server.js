@@ -12,7 +12,6 @@ var server = express.createServer();
 /**********************
  **      ROUTES      **
  **********************/
-//http://localhost:8088/getRestaurantGrade?name=Bon%20Spice%20Cafe&zip_code=11237&stree_name=St.%20Nicholas%20Avenue&building=140
 server.get('/getRestaurantGrade', function (request, response) {
     var _get = url.parse(request.url, true);
     var query = _get.query;
@@ -28,14 +27,12 @@ server.get('/getRestaurantGrade', function (request, response) {
     };
 
     mongoConnect.fetchRestaurant(restaurantData, function (responseBody) {
-        console.log(responseBody);
         response.send(buildResponse(responseBody));
     });
 
 });
 
 var buildResponse = function(results) {
-    console.log(results);
     if(results !== -1) {
 
         var responseData = {
