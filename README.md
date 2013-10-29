@@ -8,7 +8,9 @@ https://chrome.google.com/webstore/detail/nyc-restaurant-inspection/fenkpadmcahk
 Displays
 
 Letter Grade
+
 Last Inspection Score
+
 Last Inspection Date
 
 On seamless.com, yelp.com, zagat.com, menupages.com, and grubhub.com.
