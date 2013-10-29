@@ -1,0 +1,70 @@
+#inspection-details {
+    display: inline-block;
+    width: 200px;
+}
+
+#inspection-details p {
+    margin: 0;
+    padding: 0;
+    line-height: 1em;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: block;
+}
+
+#inspection-details .points {
+    font-size: 30px;
+    margin-bottom: 4px;
+}
+
+.grade-a {
+    color: #28509E;
+}
+
+.grade-b {
+    color: #21A72C;
+}
+
+.grade-c {
+    color: #EFA013;
+}
+
+.grade-z {
+    color: #000;
+}
+
+.inspection-grade {
+    vertical-align: bottom;
+    margin-right: 5px;
+    border-right: 1px solid black;
+    padding: 5px;
+    display: inline;
+}
+
+.inspection-holder {
+    border: 1px solid black;
+    border-radius: 3px;
+    width: 300px;
+    display: block;
+    margin: 10px 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+.holder-a {
+    box-shadow: 6px 8px 0 0 #28509E;
+}
+
+.holder-b {
+    box-shadow: 6px 8px 0 0 #21A72C;
+}
+
+.holder-c {
+    box-shadow: 6px 8px 0 0 #EFA013;
+}
+
+.holder-z {
+    box-shadow: 6px 8px 0 0 #000;
+}
+

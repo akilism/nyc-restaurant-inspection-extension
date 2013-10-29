@@ -83,8 +83,8 @@ var getRestaurantGrade = function(data) {
 
 $.ajax({
     type: "GET",
-    url: "http://localhost:8088/getRestaurantGrade?name=Bon%20Spice%20Cafe&zip_code=11237&stree_name=St.%20Nicholas%20Avenue&building=140",
-    data: { name: "John", location: "Boston" }
+    url: "http://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=Satyr%20Grill&zip_code=11385&street_name=Cypress%20Avenue&building=1109&telephone=7184564745"
+//    data: { name: "John", location: "Boston" }
 }).done(function( msg ) {
     alert( "Data Saved: " + msg );
 });
@@ -102,7 +102,7 @@ var restaurantGrader = {
         var name = $('#VendorName').text().trim();
         var street_address_raw = $('#RestaurantAddress > [itemprop=streetAddress]').html().trim();
         var building = '';
-        var street_address = '';
+        var street_name = '';
         var zip_code = $('#RestaurantAddress > [itemprop=postalCode]').text().trim();
         var telephone = sanitizeTelephone($('#RestaurantAddress > [itemprop=telephone]').text());
 
@@ -110,15 +110,15 @@ var restaurantGrader = {
             var address_chunks = street_address_raw.split('&nbsp;');
             var space_index = address_chunks[0].indexOf(' ');
             building = address_chunks[0].substring(0, space_index).trim();
-            street_address = address_chunks[0].substring(space_index, address_chunks[0].length).trim();
+            street_name = address_chunks[0].substring(space_index, address_chunks[0].length).trim();
         }
 
-        var space_index = street_address.lastIndexOf(' ');
+        var space_index = street_name.lastIndexOf(' ');
 
         if (space_index > 1) {
-            var suffix = street_address.substring(space_index, street_address.length).trim();
+            var suffix = street_name.substring(space_index, street_name.length).trim();
 
-            street_address = street_address.replace(suffix, '');
+            street_name = street_name.replace(suffix, '');
 
             suffix = suffix.replace('.','');
 
@@ -139,11 +139,10 @@ var restaurantGrader = {
                     suffix = 'Lane';
             }
 
-            street_address = street_address + suffix;
+            street_name = street_name + suffix;
         }
 
-
-
+        return "http://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + name + "&zip_code=" + zip_code + "&street_name=" + street_name + "&building=" + building + "&telephone=" + telephone;
     },
     setInspectionData: function (response) {
 
