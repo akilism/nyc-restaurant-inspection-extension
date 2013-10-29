@@ -24,9 +24,8 @@ var restaurantGrader = {
         }
 
         restaurantData.name = restaurantData.name.replace("&","And").replace("'","").replace(/-/g,'');
-        console.log(restaurantData);
 
-        console.log("https://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + restaurantData.name + "&zip_code=" + restaurantData.zip_code + "&street_name=" + restaurantData.street_name + "&building=" + restaurantData.building + "&telephone=" + restaurantData.telephone);
+        //console.log("https://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + restaurantData.name + "&zip_code=" + restaurantData.zip_code + "&street_name=" + restaurantData.street_name + "&building=" + restaurantData.building + "&telephone=" + restaurantData.telephone);
         return "https://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + restaurantData.name + "&zip_code=" + restaurantData.zip_code + "&street_name=" + restaurantData.street_name + "&building=" + restaurantData.building + "&telephone=" + restaurantData.telephone;
     },
     fetchDataZagat: function () {
