@@ -36,7 +36,7 @@ server.get('/getRestaurantGrade', function (request, response) {
 });
 
 var buildResponse = function(results) {
-
+    console.log(results);
     if(results !== -1) {
 
         var responseData = {
