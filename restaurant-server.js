@@ -16,7 +16,6 @@ var server = express.createServer();
 server.get('/getRestaurantGrade', function (request, response) {
     var _get = url.parse(request.url, true);
     var query = _get.query;
-    console.log(request.headers);
     console.log('getRestaurantGrade for ' + query.name);
 
     var restaurantData = {
@@ -25,7 +24,7 @@ server.get('/getRestaurantGrade', function (request, response) {
         street_name : (query.street_name) ? query.street_name : '',
         building    : (query.building) ? query.building : '',
         telephone   : (query.telephone) ? query.telephone : '',
-        URL         : 'test'
+        URL         : (request.headers.referer) ? request.headers.referer : 'no-referer'
     };
 
     mongoConnect.fetchRestaurant(restaurantData, function (responseBody) {
@@ -49,7 +48,7 @@ var buildResponse = function(results) {
         return responseData;
     }
 
-    return results;
+    return { error: -1 };
 };
 
 var port = process.env.PORT || 8088;
