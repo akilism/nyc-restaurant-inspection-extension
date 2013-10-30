@@ -8,7 +8,7 @@ var NA = require("nodealytics");
 var mongoConnect = require('./lib/mongo_dal');
 var server = express.createServer();
 var restaurantData;
-
+var request_url;
 
 /**********************
  **      ROUTES      **
@@ -16,6 +16,7 @@ var restaurantData;
 server.get('/getRestaurantGrade', function (request, response) {
     var _get = url.parse(request.url, true);
     var query = _get.query;
+    request_url = request.url;
     console.log('getRestaurantGrade for ' + query.name);
 
     restaurantData = {
@@ -38,10 +39,15 @@ var buildResponse = function(results) {
     var matched = (results === -1) ? false : true;
 
     NA.initialize('UA-45253887-1', 'mynameismyname.com', function () {
-        NA.trackPage(restaurantData.URL, 'Search for ' + restaurantData.name + ' match : ' + matched, function (err, resp) {
+        NA.trackEvent('Search from: ' + restaurantData.URL, request_url, function (err, resp) {
 //            if (!err, resp.statusCode === 200) {
 //
 //            }
+        });
+        NA.trackPage('Search', 'Result: ' + restaurantData.name + ' match: ' + matched, function (err, resp) {
+            //            if (!err, resp.statusCode === 200) {
+            //
+            //            }
         });
     });
 
