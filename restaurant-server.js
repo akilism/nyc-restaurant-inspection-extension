@@ -44,7 +44,7 @@ var buildResponse = function(results) {
 //
 //            }
         });
-        NA.trackPage('Search for :' + restaurantData.name, restaurantData.name.replace(" ", "-") + '?match=' + matched, function (err, resp) {
+        NA.trackPage('Search for :' + restaurantData.name, restaurantData.name.replace(/ /g, "-") + '?match=' + matched, function (err, resp) {
             //            if (!err, resp.statusCode === 200) {
             //
             //            }
