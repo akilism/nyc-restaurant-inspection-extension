@@ -7,7 +7,7 @@ var url = require('url');
 var NA = require("nodealytics");
 var mongoConnect = require('./lib/mongo_dal');
 var server = express.createServer();
-
+var restaurantData;
 
 
 /**********************
@@ -18,7 +18,7 @@ server.get('/getRestaurantGrade', function (request, response) {
     var query = _get.query;
     console.log('getRestaurantGrade for ' + query.name);
 
-    var restaurantData = {
+    restaurantData = {
         name        : (query.name) ? query.name : '',
         zip_code    : (query.zip_code) ? parseInt(query.zip_code) : 0,
         street_name : (query.street_name) ? query.street_name : '',
@@ -27,15 +27,6 @@ server.get('/getRestaurantGrade', function (request, response) {
         URL         : (request.headers.referer) ? request.headers.referer : 'no-referer'
     };
 
-
-    NA.initialize('UA-45253887-1', 'mynameismyname.com', function () {
-        NA.trackPage((request.headers.referer) ? request.headers.referer : 'no-referer', 'Search for ' + query.name, function (err, resp) {
-            if (!err, resp.statusCode === 200) {
-                console.log("tracked.")
-            }
-        });
-    });
-
     mongoConnect.fetchRestaurant(restaurantData, function (responseBody) {
         response.send(buildResponse(responseBody));
     });
@@ -43,6 +34,15 @@ server.get('/getRestaurantGrade', function (request, response) {
 });
 
 var buildResponse = function(results) {
+
+    NA.initialize('UA-45253887-1', 'mynameismyname.com', function () {
+        NA.trackPage(restaurantData.URL, 'Search for ' + restaurantData.name + ' match : ' + (results === -1) ? false : true, function (err, resp) {
+//            if (!err, resp.statusCode === 200) {
+//
+//            }
+        });
+    });
+
     if(results !== -1) {
 
         var responseData = {
