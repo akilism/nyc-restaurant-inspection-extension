@@ -4,6 +4,7 @@
 
 var express = require('express');
 var url = require('url');
+var NA = require("nodealytics");
 var mongoConnect = require('./lib/mongo_dal');
 var server = express.createServer();
 
@@ -25,6 +26,15 @@ server.get('/getRestaurantGrade', function (request, response) {
         telephone   : (query.telephone) ? query.telephone : '',
         URL         : (request.headers.referer) ? request.headers.referer : 'no-referer'
     };
+
+
+    NA.initialize('UA-45253887-1', 'mynameismyname.com', function () {
+        NA.trackPage((request.headers.referer) ? request.headers.referer : 'no-referer', 'Search for ' + query.name, function (err, resp) {
+            if (!err, resp.statusCode === 200) {
+                console.log("tracked.")
+            }
+        });
+    });
 
     mongoConnect.fetchRestaurant(restaurantData, function (responseBody) {
         response.send(buildResponse(responseBody));
