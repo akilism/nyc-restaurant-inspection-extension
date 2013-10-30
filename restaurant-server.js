@@ -39,12 +39,12 @@ var buildResponse = function(results) {
     var matched = (results === -1) ? false : true;
 
     NA.initialize('UA-45253887-1', 'mynameismyname.com', function () {
-        NA.trackEvent('Search from: ' + restaurantData.URL, request_url, function (err, resp) {
+        NA.trackEvent('Search from: ' + restaurantData.URL, request_url, 'Match', matched, function (err, resp) {
 //            if (!err, resp.statusCode === 200) {
 //
 //            }
         });
-        NA.trackPage('Search', 'Result: ' + restaurantData.name + ' match: ' + matched, function (err, resp) {
+        NA.trackPage('Search for :' + restaurantData.name, restaurantData.name.replace(" ", "-") + '?match=' + matched, function (err, resp) {
             //            if (!err, resp.statusCode === 200) {
             //
             //            }
