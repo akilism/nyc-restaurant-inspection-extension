@@ -1,13 +1,12 @@
 {
     "manifest_version": 2,
     "name": "NYC Restaurant Inspection Letter Grades",
-    "version": "1.1.0",
-    "description": "Displays NYC Restaurant Inspection Letter Grades on yelp.com, seamless.com, zagat.com, menupages.com, and grubhub.com.",
+    "version": "1.1.3",
+    "description": "Displays NYC Restaurant Inspection Letter Grades on yelp.com, seamless.com, zagat.com, menupages.com, delivery.com, and grubhub.com.",
     "author": "Akil Harris",
-
     "content_scripts": [
         {
-            "matches": ["http://www.seamless.com/food-delivery/*.*.r", "http://www.yelp.com/biz/*", "http://www.zagat.com/r/*", "https://www.grubhub.com/restaurant/*", "http://www.menupages.com/restaurants/*"],
+            "matches": ["http://www.seamless.com/food-delivery/*.*.r", "http://www.yelp.com/biz/*", "http://www.zagat.com/r/*", "https://www.grubhub.com/restaurant/*", "http://www.menupages.com/restaurants/*", "https://www.delivery.com/*"],
             "css"    : ["grader.css"],
             "js"     : ["jquery.js", "grader.js"],
             "run_at" : "document_start"

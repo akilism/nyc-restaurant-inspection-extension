@@ -36,7 +36,7 @@ server.get('/getRestaurantGrade', function (request, response) {
 var buildResponse = function(results) {
 
     var matched = (results === -1) ? false : true;
-    
+
     NA.initialize('UA-45253887-1', 'mynameismyname.com', function () {
         NA.trackPage(restaurantData.URL, 'Search for ' + restaurantData.name + ' match : ' + matched, function (err, resp) {
 //            if (!err, resp.statusCode === 200) {

@@ -4,7 +4,18 @@
 
 var restaurantGrader = {
     sanitizeTelephone: function (num) {
+        //we only want the digits.
         return num.replace('(','').replace(')','').replace(/-/g,'').replace(/ /g,'');
+    },
+    cleanName: function(name) {
+        //Massage the restaurant name into a sightly easier to deal with format.
+        name = name.replace("&","And").replace("'","").replace(/-/g,'').replace(/restaurant/i,'');
+
+        if (name.indexOf("(") !== -1) {
+            name = name.slice(0, name.indexOf("(")).trim();
+        }
+
+        return name;
     },
     fetchURL: function() {
         var url = window.location.href;
@@ -21,12 +32,19 @@ var restaurantGrader = {
             restaurantData = this.fetchDataGrubhub();
         } else if (url.toLowerCase().indexOf('menupages') !== -1) {
             restaurantData = this.fetchDataMenuPages();
+        } else if (url.toLowerCase().indexOf('delivery') !== -1) {
+            if (url.toLowerCase().indexOf('search') < 0) {
+                restaurantData = this.fetchDataDelivery();
+            }
         }
 
-        restaurantData.name = restaurantData.name.replace("&","And").replace("'","").replace(/-/g,'');
+        if (restaurantData) {
+            restaurantData.name = this.cleanName(restaurantData.name);
+//            console.log("https://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + restaurantData.name + "&zip_code=" + restaurantData.zip_code + "&street_name=" + restaurantData.street_name + "&building=" + restaurantData.building + "&telephone=" + restaurantData.telephone);
+            return "https://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + restaurantData.name + "&zip_code=" + restaurantData.zip_code + "&street_name=" + restaurantData.street_name + "&building=" + restaurantData.building + "&telephone=" + restaurantData.telephone;
+        }
 
-        //console.log("https://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + restaurantData.name + "&zip_code=" + restaurantData.zip_code + "&street_name=" + restaurantData.street_name + "&building=" + restaurantData.building + "&telephone=" + restaurantData.telephone);
-        return "https://pure-depths-9510.herokuapp.com/getRestaurantGrade?name=" + restaurantData.name + "&zip_code=" + restaurantData.zip_code + "&street_name=" + restaurantData.street_name + "&building=" + restaurantData.building + "&telephone=" + restaurantData.telephone;
+        return null;
     },
     fetchDataZagat: function () {
         var name = $('[itemprop="name"]').text().trim();
@@ -201,6 +219,42 @@ var restaurantGrader = {
             telephone  : telephone
         }
     },
+    fetchDataDelivery: function () {
+        var name = $('[itemprop="name"]').text().trim();
+        var street_address_raw = $('[itemprop=streetAddress]').text().trim();
+        var building = '';
+        var street_name = '';
+        var zip_code = $('[itemprop=postalCode]').text().trim();
+        var telephone = this.sanitizeTelephone(($('[itemprop=telephone]').text().trim()) ? $('[itemprop=telephone]').text().trim() : "");
+        var address_chunks;
+        var space_index;
+
+        if (street_address_raw.indexOf(' and ') !== -1) {
+            address_chunks = street_address_raw.split(' and ');
+            space_index = address_chunks[0].indexOf(' ');
+            building = address_chunks[0].substring(0, space_index).trim();
+            street_name = address_chunks[0].substring(space_index, address_chunks[0].length).trim();
+        } else {
+            space_index = street_address_raw.indexOf(' ');
+            building = street_address_raw.substring(0, space_index).trim();
+            street_name = street_address_raw.substring(space_index, street_address_raw.length).trim();
+        }
+
+        space_index = street_name.lastIndexOf(' ');
+
+        if (space_index > 1) {
+            street_name = this.getStreetType(street_name, space_index);
+        }
+
+
+        return {
+            name       : name,
+            zip_code   : zip_code,
+            street_name: street_name,
+            building   : building,
+            telephone  : telephone
+        }
+    },
     getStreetType: function(street_name, space_index) {
         var suffix = street_name.substring(space_index, street_name.length).trim();
 
@@ -230,7 +284,11 @@ var restaurantGrader = {
     },
     getRestaurantGrade: function() {
         var request = new XMLHttpRequest();
-        request.open("GET", this.fetchURL(), true);
+        var url = this.fetchURL();
+
+        if (url == null) { return; }
+
+        request.open("GET", url, true);
         request.onload = this.setInspectionData.bind(this);
         request.send(null);
     },
@@ -250,7 +308,7 @@ var restaurantGrader = {
                     grade_details.grade_image = chrome.extension.getURL("content/NYCRestaurant_A.gif");
                     date_details = '<div id="inspection-details">' +
                                    '<p class="points grade-a">' + grade_details.score_violations + 'pts</p>' +
-                                   '<p>Last NYC Inspection:</p>' +
+                                   '<p class="inspection-label">Last NYC Inspection:</p>' +
                                    '<p class="grade-a">' + grade_details.last_inspection_date + '</p></div>';
                     break;
                 case "B":
@@ -258,7 +316,7 @@ var restaurantGrader = {
                     grade_details.grade_image = chrome.extension.getURL("content/NYCRestaurant_B.gif");
                     date_details = '<div id="inspection-details">' +
                         '<p class="points grade-b">' + grade_details.score_violations + 'pts</p>' +
-                        '<p>Last NYC Inspection:</p>' +
+                        '<p class="inspection-label">Last NYC Inspection:</p>' +
                         '<p class="grade-b">' + grade_details.last_inspection_date + '</p></div>';
                     break;
                 case "C":
@@ -266,7 +324,7 @@ var restaurantGrader = {
                     grade_details.grade_image = chrome.extension.getURL("content/NYCRestaurant_C.gif");
                     date_details = '<div id="inspection-details">' +
                         '<p class="points grade-c">' + grade_details.score_violations + 'pts</p>' +
-                        '<p>Last NYC Inspection:</p>' +
+                        '<p class="inspection-label">Last NYC Inspection:</p>' +
                         '<p class="grade-c">' + grade_details.last_inspection_date + '</p></div>';
                     break;
                 case "Z":
@@ -274,7 +332,7 @@ var restaurantGrader = {
                     grade_details.grade_image = chrome.extension.getURL("content/NYCRestaurant_Z.gif");
                     date_details = '<div id="inspection-details">' +
                         '<p class="points grade-z">' + grade_details.score_violations + 'pts</p>' +
-                        '<p>Last NYC Inspection:</p>' +
+                        '<p class="inspection-label">Last NYC Inspection:</p>' +
                         '<p class="grade-z">' + grade_details.last_inspection_date + '</p></div>';
                     break;
             }
@@ -291,10 +349,13 @@ var restaurantGrader = {
                 $('h3').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
             } else if (url.toLowerCase().indexOf('menupages') != -1){
                 $('h1').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
+            } else if (url.toLowerCase().indexOf('delivery') != -1){
+                $('.top_name').after('<div style="float: none;" class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
             }
         }
     }
 };
+
 
 $(document).ready(function (){
     restaurantGrader.getRestaurantGrade();

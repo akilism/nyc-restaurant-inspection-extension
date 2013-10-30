@@ -1,6 +1,6 @@
 #inspection-details {
     display: inline-block;
-    width: 200px;
+    width: 175px;
 }
 
 #inspection-details p {
@@ -13,9 +13,18 @@
     display: block;
 }
 
+#inspection-details p:last-child {
+    padding: 2px 0;
+}
+
 #inspection-details .points {
     font-size: 30px;
     margin-bottom: 4px;
+}
+
+#inspection-details .inspection-label
+{
+    color: #000;
 }
 
 .grade-a {
@@ -38,18 +47,19 @@
     vertical-align: bottom;
     margin-right: 5px;
     border-right: 1px solid black;
-    padding: 5px;
+    padding: 7px;
     display: inline;
 }
 
 .inspection-holder {
     border: 1px solid black;
     border-radius: 3px;
-    width: 300px;
+    width: 255px;
     display: block;
     margin: 10px 0;
     padding: 0;
     background-color: #fff;
+    float: none;
 }
 
 .holder-a {
