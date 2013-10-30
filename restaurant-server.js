@@ -39,7 +39,7 @@ var buildResponse = function(results) {
     var matched = (results === -1) ? false : true;
 
     NA.initialize('UA-45253887-1', 'mynameismyname.com', function () {
-        NA.trackEvent('Search from: ' + restaurantData.URL, match.toString(), function (err, resp) {
+        NA.trackEvent('Search from: ' + restaurantData.URL, matched.toString(), function (err, resp) {
 //            if (!err, resp.statusCode === 200) {
 //
 //            }
