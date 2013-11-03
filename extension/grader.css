@@ -9,7 +9,7 @@
     line-height: 1em;
     font-size: 16px;
     font-weight: bold;
-    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /*font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
     display: block;
 }
 
@@ -60,6 +60,9 @@
     padding: 0;
     background-color: #fff;
     float: none;
+    height: 74px;
+    overflow: hidden;
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 }
 
 .holder-a {
@@ -78,3 +81,74 @@
     box-shadow: 6px 8px 0 0 #000;
 }
 
+#searching {
+    text-align: center;
+    font-size: 42px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    /*font-family: Futura, "Trebuchet MS", Arial, sans-serif;*/
+}
+
+#searching span {
+    display: inline-block;
+    margin-top: 15px;
+    text-transform: capitalize;
+    color: #000;
+    font-weight: normal;
+}
+
+#searching span.animate {
+    -webkit-animation-name: bounce-up;
+    -webkit-animation-duration: 1.5s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes bounce-up {
+    from {
+        margin-top: 50%;
+    }
+
+    to {
+        margin-top: 15px;
+    }
+}
+
+#no_results {
+    margin: 0;
+    padding: 15px 0 0 0;
+    text-align: center;
+    font-size: 42px;
+    height: 36px;
+    line-height: 42px;
+    /*font-family: Futura, "Trebuchet MS", Arial, sans-serif;*/
+}
+
+#no_results span {
+    display: inline-block;
+    margin: 0 1px;
+    color: #000;
+    line-height: 42px;
+    font-weight: normal;
+}
+
+#no_results span.animate {
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 1.5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-iteration-count: 2;
+}
+
+
+@-webkit-keyframes spin {
+    from {
+        -webkit-transform: rotate3d(0, 60, 0, -360deg);
+    }
+
+    to {
+        -webkit-transform: rotate3d(0, 60, 0, 0deg);
+    }
+}

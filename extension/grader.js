@@ -3,6 +3,7 @@
  */
 
 var restaurantGrader = {
+    isFlyPage: false,
     sanitizeTelephone: function (num) {
         //we only want the digits.
         return num.replace('(','').replace(')','').replace(/-/g,'').replace(/ /g,'');
@@ -282,7 +283,64 @@ var restaurantGrader = {
 
         return street_name + suffix;
     },
+    setLoader: function() {
+
+        var url = window.location.href;
+        var html = '<div id="inspection_holder" class="inspection-holder" style="float: none;"><p id="searching"><span>searching</span></p></div>';
+        var fly = false;
+        if(url.toLowerCase().indexOf('yelp') != -1) {
+            $('[itemprop="title"]').each(function (index){
+                var text = $(this).text().toLowerCase();
+
+                if ((text.indexOf('food') !== -1) || (text.indexOf('restaurants') !== -1)) {
+                    fly = true;
+
+                }
+            });
+
+            this.isFlyPage = fly;
+            if (this.isFlyPage) {
+                $('#bizPhone').after(html);
+            }
+        } else if (url.toLowerCase().indexOf('seamless') != -1){
+            $('.consumer').after(html);
+        } else if (url.toLowerCase().indexOf('zagat') != -1){
+            $('.date').after(html);
+        } else if (url.toLowerCase().indexOf('grubhub') != -1){
+            $('h3').after(html);
+        } else if (url.toLowerCase().indexOf('menupages') != -1){
+
+            if ($('[class="addr street-address"]').text() !== "") {
+                $('h1').after(html);
+            }
+        } else if (url.toLowerCase().indexOf('delivery') !== -1){
+            this.isFlyPage = true;
+            $('.top_name').after(html);
+        }
+
+        var $e = $('#searching span');
+        $e.addClass('animate');
+    },
+    inValidURL: function() {
+        var url = this.fetchURL().toLowerCase();
+
+        if ((url.indexOf('/members/') !== -1) ||
+            (url.indexOf('account.') !== -1) ||
+            (url.indexOf('order_confirm.') !== -1) ||
+            (url.indexOf('order_process.') !== -1) ){
+            return true;
+        }
+
+        return false;
+    },
     getRestaurantGrade: function() {
+
+        if (this.inValidURL()) {
+            return;
+        }
+
+        this.setLoader();
+
         var request = new XMLHttpRequest();
         var url = this.fetchURL();
 
@@ -293,10 +351,22 @@ var restaurantGrader = {
         request.send(null);
     },
     setInspectionData: function (xhrEvent) {
+
         var grade_details = JSON.parse(xhrEvent.target.response);
+        var $results;
 
         //must have not matched or some other server error.
-        if(grade_details.error) { return; }
+        if(grade_details.error) {
+
+            $results = $('<p id="no_results"><span class="letter_1">N</span><span class="letter_2">o</span><span class="letter_3">&nbsp;</span><span class="letter_4">R</span><span class="letter_5">e</span><span class="letter_6">s</span><span class="letter_7">u</span><span class="letter_8">l</span><span class="letter_9">t</span><span class="letter_10">s</span></p>');
+            $('#searching').fadeOut(250, function () {
+                $results.fadeOut(0);
+                $(".inspection-holder").append($results);
+                $results.fadeIn(150);
+                $("#no_results span").addClass("animate");
+            });
+            return;
+        }
 
         if(grade_details) {
             var date_details = "";
@@ -337,21 +407,26 @@ var restaurantGrader = {
                     break;
             }
 
-            var url = window.location.href;
+            $results = $('<img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details);
 
-            if(url.toLowerCase().indexOf('yelp') != -1) {
-                $('#bizPhone').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
-            } else if (url.toLowerCase().indexOf('seamless') != -1){
-                $('.consumer').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
-            } else if (url.toLowerCase().indexOf('zagat') != -1){
-                $('.date').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
-            } else if (url.toLowerCase().indexOf('grubhub') != -1){
-                $('h3').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
-            } else if (url.toLowerCase().indexOf('menupages') != -1){
-                $('h1').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
-            } else if (url.toLowerCase().indexOf('delivery') != -1){
-                $('.top_name').after('<div style="float: none;" class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
-            }
+            $('#searching').fadeOut(250, function () {
+                $results.fadeOut(0);
+                $(".inspection-holder").append($results);
+                $results.fadeIn(125);
+            });
+//            if(url.toLowerCase().indexOf('yelp') != -1) {
+//                $('#bizPhone').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
+//            } else if (url.toLowerCase().indexOf('seamless') != -1){
+//                $('.consumer').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
+//            } else if (url.toLowerCase().indexOf('zagat') != -1){
+//                $('.date').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
+//            } else if (url.toLowerCase().indexOf('grubhub') != -1){
+//                $('h3').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
+//            } else if (url.toLowerCase().indexOf('menupages') != -1){
+//                $('h1').after('<div class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
+//            } else if (url.toLowerCase().indexOf('delivery') != -1){
+//                $('.top_name').after('<div style="float: none;" class="inspection-holder ' + holder_class + '"><img class="inspection-grade" src="' + grade_details.grade_image + '">' + date_details + '</div>');
+//            }
         }
     }
 };
