@@ -288,40 +288,56 @@ var restaurantGrader = {
     setLoader: function() {
 
         var url = window.location.href;
-        var html = '<div id="inspection_holder" class="inspection-holder" style="float: none;"><p id="searching"><span>searching</span></p></div>';
+        var html = '<p id="searching"><span>searching</span></p>';
         var fly = false;
+        var yelpNew = false;
+
         if(url.toLowerCase().indexOf('yelp') != -1) {
+            var iconedList = $('div.summary ul.iconed-list');
             $('[itemprop="title"]').each(function (index){
                 var text = $(this).text().toLowerCase();
 
-                if ((text.indexOf('food') !== -1) || (text.indexOf('restaurants') !== -1)) {
+                //new yelp look
+                if(iconedList.children.length > 0) {
+                  yelpNew = true;
+                } else if ((text.indexOf('food') !== -1) || (text.indexOf('restaurants') !== -1)) {
                     fly = true;
-
                 }
             });
 
+            this.yelpNew = yelpNew;
             this.isFlyPage = fly;
+            if (this.yelpNew) {
+              iconedList.append('<li id="inspection_holder" class="yelp-new inspection-holder">'
+                  + html + '</li>');
+            }
             if (this.isFlyPage) {
-                $('#bizPhone').after(html);
+                $('#bizPhone').after('<div id="inspection_holder" class="yelp inspection-holder" style="float: none;">'
+                    + html + '</div>');
             }
         } else if (url.toLowerCase().indexOf('seamless') != -1){
-            $('.consumer').after(html);
+            $('.consumer').after('<div id="inspection_holder" class="seamless inspection-holder" style="float: none;">'
+                + html + '</div>');
         } else if (url.toLowerCase().indexOf('zagat') != -1){
-            $('.date').after(html);
+            $('.date').after('<div id="inspection_holder" class="zagat inspection-holder" style="float: none;">'
+                + html + '</div>');
         } else if (url.toLowerCase().indexOf('grubhub') != -1){
-            $('h3').after(html);
+            $('h3').after('<div id="inspection_holder" class="grubhub inspection-holder" style="float: none;">'
+                + html + '</div>');
         } else if (url.toLowerCase().indexOf('menupages') != -1){
 
             if ($('[class="addr street-address"]').text() !== "") {
-                $('h1').after(html);
+                $('h1').after('<div id="inspection_holder" class="menupages inspection-holder" style="float: none;">'
+                    + html + '</div>');
             }
         } else if (url.toLowerCase().indexOf('delivery') !== -1){
             this.isFlyPage = true;
-            $('.top_name').after(html);
+            $('.top_name').after('<div id="inspection_holder" class="delivery inspection-holder" style="float: none;">'
+                + html + '</div>');
         }
 
-        var $e = $('#searching span');
-        $e.addClass('animate');
+//        var $e = $('#searching span');
+//        $e.addClass('animate');
     },
     inValidURL: function() {
         var url = this.fetchURL();
@@ -367,7 +383,7 @@ var restaurantGrader = {
                 $results.fadeOut(0);
                 $(".inspection-holder").append($results);
                 $results.fadeIn(150);
-                $("#no_results span").addClass("animate");
+//                $("#no_results span").addClass("animate");
             });
             return;
         }

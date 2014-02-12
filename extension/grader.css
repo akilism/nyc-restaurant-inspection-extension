@@ -1,27 +1,3 @@
-#inspection-details {
-    display: inline-block;
-    width: 175px;
-}
-
-#inspection-details p {
-    margin: 0;
-    padding: 0;
-    line-height: 1em;
-    font-size: 16px;
-    font-weight: bold;
-    /*font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    display: block;
-}
-
-#inspection-details p:last-child {
-    padding: 2px 0;
-}
-
-#inspection-details .points {
-    font-size: 30px;
-    margin-bottom: 4px;
-}
-
 #inspection-details .inspection-label
 {
     color: #000;
@@ -43,64 +19,24 @@
     color: #000;
 }
 
-.inspection-grade {
-    vertical-align: bottom;
-    margin-right: 5px;
-    border-right: 1px solid black;
-    padding: 7px;
-    display: inline;
-}
+/*.holder-a {*/
+    /*box-shadow: 6px 8px 0 0 #28509E;*/
+/*}*/
 
-.inspection-holder {
-    border: 1px solid black;
-    border-radius: 3px;
-    width: 255px;
-    display: block;
-    margin: 10px 0;
-    padding: 0;
-    background-color: #fff;
-    float: none;
-    height: 74px;
-    overflow: hidden;
-    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
-}
+/*.holder-b {*/
+    /*box-shadow: 6px 8px 0 0 #21A72C;*/
+/*}*/
 
-.holder-a {
-    box-shadow: 6px 8px 0 0 #28509E;
-}
+/*.holder-c {*/
+    /*box-shadow: 6px 8px 0 0 #EFA013;*/
+/*}*/
 
-.holder-b {
-    box-shadow: 6px 8px 0 0 #21A72C;
-}
-
-.holder-c {
-    box-shadow: 6px 8px 0 0 #EFA013;
-}
-
-.holder-z {
-    box-shadow: 6px 8px 0 0 #000;
-}
-
-#searching {
-    text-align: center;
-    font-size: 42px;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-    /*font-family: Futura, "Trebuchet MS", Arial, sans-serif;*/
-}
-
-#searching span {
-    display: inline-block;
-    margin-top: 15px;
-    text-transform: capitalize;
-    color: #000;
-    font-weight: normal;
-}
+/*.holder-z {*/
+    /*box-shadow: 6px 8px 0 0 #000;*/
+/*}*/
 
 #searching span.animate {
-    -webkit-animation-name: bounce-up;
+    -webkit-animation-name: fade;
     -webkit-animation-duration: 1.5s;
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-direction: alternate;
@@ -108,12 +44,90 @@
 
 @-webkit-keyframes bounce-up {
     from {
-        margin-top: 50%;
+        opacity: 0.45;
     }
 
     to {
-        margin-top: 15px;
+      opacity: 1;
     }
+}
+
+#inspection-details {
+  display: inline-block;
+  width: 175px;
+}
+
+#inspection-details p {
+  margin: 0;
+  padding: 0;
+  line-height: 1em;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', 'Helvetica Neue LT Std', 'Helvetica LT Std', Helvetica, arial, sans-serif;
+  display: block;
+}
+
+#inspection-details p:last-child {
+  padding: 2px 0;
+}
+
+#inspection-details .points {
+  font-size: 30px;
+  margin-bottom: 4px;
+}
+
+.inspection-grade {
+  vertical-align: bottom;
+  margin-right: 5px;
+  border-right: 1px solid black;
+  padding: 7px;
+  display: inline;
+}
+
+.inspection-holder {
+  border: 1px solid black;
+  width: 255px;
+  display: block;
+  margin: 10px 0;
+  padding: 0;
+  background-color: #fff;
+  float: none;
+  height: 74px;
+  overflow: hidden;
+}
+
+#searching {
+  text-align: center;
+  font-size: 42px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+#searching span {
+  display: inline-block;
+  text-transform: capitalize;
+  color: #000;
+  font-weight: normal;
+}
+
+.yelp #searching span
+.menupages #searching span {
+  margin-top: 15px;
+}
+
+.delivery #searching span,
+.zagat #searching span {
+  margin-top: 30px;
+}
+
+.seamless #searching span {
+  margin-top: 5px;
+}
+
+.grubhub #searching span {
+  margin-top: 25px;
 }
 
 #no_results {
@@ -134,21 +148,78 @@
     font-weight: normal;
 }
 
-#no_results span.animate {
-    -webkit-animation-name: spin;
-    -webkit-animation-duration: 1.5s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-direction: alternate;
-    -webkit-animation-iteration-count: 2;
+
+/* new yelp styles */
+
+
+.yelp-new #inspection-details {
+  display: inline-block;
+  font-family: 'Helvetica Neue', 'Helvetica Neue LT Std', 'Helvetica LT Std', Helvetica, arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  width: 230px;
+  border-top: 1px solid #dfdfdf;
+  padding-top: 8px;
 }
 
+.yelp-new #inspection-details p {
+  font-weight: normal;
+  font-size: 14px;
+}
 
-@-webkit-keyframes spin {
-    from {
-        -webkit-transform: rotate3d(0, 60, 0, -360deg);
-    }
+.yelp-new #inspection-details .points {
+  font-size: 16px;
+  float: left;
+  padding-right: 15px;
+  font-weight: bold;
+}
 
-    to {
-        -webkit-transform: rotate3d(0, 60, 0, 0deg);
-    }
+.yelp-new .inspection-grade {
+  vertical-align: bottom;
+  margin-right: 5px;
+  border-right: 1px solid black;
+  padding: 7px;
+  display: inline;
+}
+
+.yelp-new.inspection-holder {
+  background: transparent;
+  border: 0;
+  height: auto;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.yelp-new img.inspection-grade {
+  height: 30px;
+  border: none;
+}
+.yelp-new #searching {
+  margin: 0;
+  padding: 5px;
+  overflow: hidden;
+  height: 100%;
+  font-size: 24px;
+}
+
+.yelp-new #searching span {
+  display: inline-block;
+  margin-top: 0;
+  text-transform: capitalize;
+  color: #000;
+  font-weight: normal;
+}
+
+.yelp-new #no_results {
+  margin: 0;
+  padding: 5px 0 0 0;
+  text-align: center;
+}
+
+.yelp-new #no_results span {
+  display: inline-block;
+  margin: 0 1px;
+  color: #000;
+  font-weight: normal;
 }
