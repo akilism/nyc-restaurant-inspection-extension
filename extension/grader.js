@@ -298,7 +298,7 @@ var restaurantGrader = {
                 var text = $(this).text().toLowerCase();
 
                 //new yelp look
-                if(iconedList.children.length > 0) {
+                if(iconedList.children) {
                   yelpNew = true;
                 } else if ((text.indexOf('food') !== -1) || (text.indexOf('restaurants') !== -1)) {
                     fly = true;
