@@ -13,4 +13,4 @@ Last Inspection Score
 
 Last Inspection Date
 
-On seamless.com, yelp.com, zagat.com, menupages.com, and grubhub.com.
+On seamless.com, yelp.com (New and old view), zagat.com, menupages.com, and grubhub.com.
